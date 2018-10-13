@@ -101,6 +101,8 @@ var BAG_OF_LETTERS = [
 		new Letter('Z', 1, 10),
 ];
 
+var NULL_LETTER= new Letter(' ', 1, 0);
+
 var YOUR_HAND = new Array();
 var SCORE = 0;
 function startGame() {
@@ -118,14 +120,9 @@ function addNumbersFromBag(){
 	//初始 YOUR_HAND.length = 0
 	console.log("your hand has:" + YOUR_HAND.length);
 	//将随机tile(s) 填满 YOUR_HAND
-	if (BAG_OF_LETTERS.length){
-		for(i=YOUR_HAND.length; i < 7; i++){
-			YOUR_HAND[i] = getAvailableLetter();
-		}
-	}else{
-		alert("Out of new letters.")	
+	for(i=YOUR_HAND.length; i < 7; i++){
+		YOUR_HAND[i] = getAvailableLetter();
 	}
-	
 }
 
 
@@ -137,7 +134,7 @@ function displayHand(){
         //输出普通信息: e.g. #letter-1 set to A
 		console.log("#letter-" + (i+1) +" set to " + YOUR_HAND[i].letter);
 		
-		//addClass: 给指定元素增加类名. 
+		//addClass: 给指定元素增加class属性. 
 		//这里e.g. 将#letter-1 增加一个 letter-A class属性；
 		//         将#points-1(这个‘1’是7张卡片中第一张的意思) 增加一个 points-1(这个‘1’是字母A被使用得1分的意思) class属性 	
 		//一旦卡片进入手中，就给它们加上class，使它们具有卡片上的字母和分数 属性
@@ -163,7 +160,7 @@ function displayHand(){
 
 
 function getAvailableLetter(){
-	//if(BAG_OF_LETTERS.length){
+	if(BAG_OF_LETTERS.length){
 		//[0，100] 的随机数作为 随机索引
 		var randomIndex = Math.floor(Math.random() * BAG_OF_LETTERS.length);
 		//删除BAG_OF_LETTERS中，该索引位置的元素，并返回给randomLetter。（BAG_OF_LETTERS数组中的元素会起来越少。）
@@ -171,10 +168,9 @@ function getAvailableLetter(){
 		console.log(randomLetter[0]);
 		//返回BAG_OF_LETTERS中的随机元素
 		return randomLetter[0];
-	//}else{
-	//	alert("Letters are running out.");
-	//	return 
-	//}
+	}else{
+		return NULL_LETTER;
+		}
 }
 
 
@@ -227,75 +223,70 @@ function findWordToUse(){
 			
 		}
 	}
-
-	//max_points: the max points of a word among all eligible words.
-	var max_points = 0;
-	
-	//The index of the word with max points
-	var max_point_index = 0;
-	
-	for (i=0; i<point_record.length; i++){
-			if (point_record[i]>max_points){
-				max_points = point_record[i];
-				max_point_index = i;
-				}
-	}
-	
-	var max_word_record = [];
-
-	for (i=0; i<point_record.length; i++){
-		if (point_record[i] == max_points){
-			max_word_record.push(word_record[i]);
-
+	if(word_record.length){
+		//max_points: the max points of a word among all eligible words.
+		var max_points = 0;
+		
+		//The index of the word with max points
+		var max_point_index = 0;
+		
+		for (i=0; i<point_record.length; i++){
+				if (point_record[i]>max_points){
+					max_points = point_record[i];
+					max_point_index = i;
+					}
 		}
 		
-	}
+		var max_word_record = [];
 	
-	//Bubble Sort for YOUR_HAND
-	for (iii=0; iii<YOUR_HAND.length - 1; iii++){
-		for(jjj=0; jjj< YOUR_HAND.length - iii -1; jjj++){
-			if (YOUR_HAND[jjj].pointsWhenLettersUsed < YOUR_HAND[jjj+1].pointsWhenLettersUsed){
-				var temp = YOUR_HAND[jjj];
-				YOUR_HAND[jjj] = YOUR_HAND[jjj+1];
-				YOUR_HAND[jjj+1] = temp;
-				
-				}
+		for (i=0; i<point_record.length; i++){
+			if (point_record[i] == max_points){
+				max_word_record.push(word_record[i]);
+	
+			}
+			
 		}
-	}
-	
-	//Define a flag. When there is only one element in max_word_record, flag = 1;
-	var flag_only_one_element = 0;
-	
-	if (max_word_record.length == 1){
-		flag_only_one_element = 1;
-	}
-	
-	//Find the word with most high-point-letters in max_word_record
-	for(j=0; j<YOUR_HAND.length; j++){
-		if (!flag_only_one_element){
-			for (i=0; i<max_word_record.length; i++){
-				if (max_word_record[i].indexOf(YOUR_HAND[j].letter) == -1){
-					max_word_record.splice(i, 1);
-					i = i -1;
-					if (max_word_record.length == 1){
-						flag_only_one_element = 1;
-						break;
+		
+		//Bubble Sort for YOUR_HAND
+		for (iii=0; iii<YOUR_HAND.length - 1; iii++){
+			for(jjj=0; jjj< YOUR_HAND.length - iii -1; jjj++){
+				if (YOUR_HAND[jjj].pointsWhenLettersUsed < YOUR_HAND[jjj+1].pointsWhenLettersUsed){
+					var temp = YOUR_HAND[jjj];
+					YOUR_HAND[jjj] = YOUR_HAND[jjj+1];
+					YOUR_HAND[jjj+1] = temp;
+					
+					}
+			}
+		}
+		
+		//Define a flag. When there is only one element in max_word_record, flag = 1;
+		var flag_only_one_element = 0;
+		
+		if (max_word_record.length == 1){
+			flag_only_one_element = 1;
+		}
+		
+		//Find the word with most high-point-letters in max_word_record
+		for(j=0; j<YOUR_HAND.length; j++){
+			if (!flag_only_one_element){
+				for (i=0; i<max_word_record.length; i++){
+					if (max_word_record[i].indexOf(YOUR_HAND[j].letter) == -1){
+						max_word_record.splice(i, 1);
+						i = i -1;
+						if (max_word_record.length == 1){
+							flag_only_one_element = 1;
+							break;
+						}
 					}
 				}
 			}
 		}
-	}
-/*
-	var str_output = 'Words with max scores: ' + max_word_record[0] + '<br \> '
-	
-	for (i=0 ; i< word_record.length; i ++){
-	str_output = str_output + word_record[i] + ': ' + point_record[i] + '; ' + ' ';
-	}
-	
-	//在find-wordss中输出文本	
-	$( "#find-wordss").html(str_output);*/
-	
-	$( "#human-word-input").val( max_word_record[0]);
+		
+		//Output the word with max points into text input box
+		$( "#human-word-input").val( max_word_record[0]);
+	}else{
+		alert('No word available.');	
+		}
 	
 
 }
