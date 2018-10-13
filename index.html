@@ -4,6 +4,11 @@
 	<meta charset="UTF-8">
 	<link type="text/css" rel="stylesheet" charset="UTF-8" href="css/word-scord-game.css">
 	<title>Word Score Game</title>
+	<!--
+	<style>
+	//#score-box {width: 100px; background:#CCC; border:10px solid #888; display:block;}
+	//</style>
+	-->
 </head>
 <body>
 	<div id="layout">
@@ -27,10 +32,15 @@
 		</tr>
 		</table>
 	</div>
+	<br />
 	<button id="find-word-button">Run your code to find a word</button>
+<!--	<textarea name="textarea" cols="30" rows="10">
+	我是一个文本框。
+	</textarea>-->
 	<br />
+	<!--<div id="find-words">--><span id="find-wordss"></span><!--</div>-->
 	<br />
-	<input type="text" id="human-word-input" />
+	<input name="text" type="text" id="human-word-input" />
 	<button id="human-find-word-button">Human Find a word</button>
 	<br />
 	<br />
@@ -40,7 +50,7 @@
 	</ul>
 
 	<script type="text/javascript" src="lib/jquery-3.2.1.js"></script>
-	<script type="text/javascript" src="lib/wordList.min.js"></script>
+	<script type="text/javascript" src="lib/wordList.min.js"></script>	
 	<script type="text/javascript" src="lib/wordBank.min.js"></script>
 	<script type="text/javascript" src="js/word-score-game-letters.js"></script>
 	<script type="text/javascript" src="js/word-score-game.js"></script>
